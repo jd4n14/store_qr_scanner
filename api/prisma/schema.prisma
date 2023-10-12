@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tienda {
+  id             String           @id @default(uuid())
+  codigo         String
+  nombre         String
+  supervisor     String
+  RegistroTienda RegistroTienda[]
+}
+
+model Unidad {
+  id             String           @id @default(uuid())
+  codigo         String
+  nombre         String?
+  eliminada      DateTime?
+  RegistroUnidad RegistroUnidad[]
+  RegistroTienda RegistroTienda[]
+}
+
+model Usuario {
+  id             String           @id @default(uuid())
+  nombre         String
+  codigo         String
+  RegistroUnidad RegistroUnidad[]
+  RegistroTienda RegistroTienda[]
+  rol            Rol              @relation(fields: [rolId], references: [id])
+  rolId          String
+}
+
+model Rol {
+  id      String    @id @default(uuid())
+  nombre  String
+  Usuario Usuario[]
+}
+
+model RegistroUnidad {
+  id        String  @id @default(uuid())
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String
+  unidad    Unidad  @relation(fields: [unidadId], references: [id])
+  unidadId  String
+}
+
+model RegistroTienda {
+  id          String   @id @default(uuid())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId   String
+  tienda      Tienda   @relation(fields: [tiendaId], references: [id])
+  tiendaId    String
+  unidad      Unidad   @relation(fields: [unidadId], references: [id])
+  unidadId    String
+  horaEntrada DateTime
+  horaSalida  DateTime
+  comentario  String?
+}
