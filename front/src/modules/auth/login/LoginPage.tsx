@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Container, Typography } from '@mui/material';
 import LoginForm from './components/LoginForm';
+import { Helmet } from "react-helmet-async";
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -21,6 +22,9 @@ const StyledContent = styled('div')(({ theme }) => ({
 export default function LoginPage() {
   return (
     <>
+    <Helmet>
+        <title> 404 Pagina no encontrada </title>
+      </Helmet>
       <StyledRoot>
         <Container maxWidth="sm">
           <StyledContent>

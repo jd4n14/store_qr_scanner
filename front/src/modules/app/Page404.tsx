@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { Button, Typography, Container, Box } from "@mui/material";
+import { Button, Typography, Container } from "@mui/material";
 
 const StyledContent = styled("div")(({ theme }) => ({
   maxWidth: 480,
@@ -17,31 +17,25 @@ export default function Page404() {
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | Minimal UI </title>
+        <title> 404 Pagina no encontrada </title>
       </Helmet>
 
       <Container>
         <StyledContent sx={{ textAlign: "center", alignItems: "center" }}>
           <Typography variant="h3" paragraph>
-            Sorry, page not found!
+            Pagina no encontrada!
           </Typography>
 
           <Typography sx={{ color: "text.secondary" }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve
-            mistyped the URL? Be sure to check your spelling.
+            Lo siento esta pagina no existe
           </Typography>
-
-          <Box
-            component="img"
-            src="/assets/illustrations/illustration_404.svg"
-            sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
-          />
 
           <Button
             to="/"
             size="large"
             variant="contained"
             component={RouterLink}
+            sx={{ mt: 5 }}
           >
             Go to Home
           </Button>

@@ -39,7 +39,7 @@ const navConfig = [
   },
   {
     title: "Tiendas",
-    path: "/dashboard/products",
+    path: "/stores",
     icon: icon("store_line"),
   },
   {
