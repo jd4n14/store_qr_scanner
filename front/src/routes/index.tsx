@@ -8,6 +8,7 @@ import Page404 from "../modules/app/Page404.tsx";
 import UsersPage from "../modules/users/UsersPage.tsx";
 import LogoutPage from "../modules/app/Logout.tsx";
 import VehiclesPage from "../modules/vehicles/VehiclesPage.tsx";
+import ReportsPage from "../modules/reports/ReportsPage.tsx";
 
 export default function Router() {
   const routes = useRoutes([
@@ -20,6 +21,7 @@ export default function Router() {
         { path: "/stores", element: <ProtectedRoute component={<StorePage />} /> },
         { path: "/users", element: <ProtectedRoute component={<UsersPage />} /> },
         { path: "/vehicles", element: <ProtectedRoute component={<VehiclesPage />} /> },
+        { path: "/reports", element: <ProtectedRoute component={<ReportsPage />} /> },
         { path: "*", element: <ProtectedRoute component={<Page404 />} /> },
       ],
     },

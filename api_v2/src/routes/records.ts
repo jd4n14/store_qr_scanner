@@ -1,6 +1,10 @@
 import {FastifyInstance, FastifyRequest, FastifyReply} from 'fastify';
 import {Resource} from 'fastify-autoroutes';
 import records, {Record} from '../models/Record';
+import users from "../models/User";
+import stores from "../models/Store";
+import vehicles from "../models/Vehicle";
+import {ObjectId} from "mongodb";
 
 export default function (fastify: FastifyInstance) {
   return <Resource>{
@@ -22,16 +26,20 @@ export default function (fastify: FastifyInstance) {
             {
               $group: {
                 _id: {
-                  year: {$year: '$date'},
-                  month: {$month: '$date'},
-                  day: {$dayOfMonth: '$date'},
+                  userId: "$user._id",
+                  storeId: "$store._id",
+                  vehicleId: "$vehicle._id",
+                  date: {
+                    $dateToString: {format: "%Y-%m-%d", date: "$date"}
+                  }
                 },
                 records: {
                   $push: {
-                    userId: '$userId',
-                    storeId: '$storeId',
-                    vehicleId: '$vehicleId',
                     date: '$date',
+                    user: '$user',
+                    store: '$store',
+                    vehicle: '$vehicle',
+                    type: '$type',
                   },
                 },
               },
@@ -44,85 +52,119 @@ export default function (fastify: FastifyInstance) {
             {
               $project: {
                 _id: 0,
-                date: {
-                  $dateToString: {
-                    format: '%Y-%m-%d',
-                    date: {
-                      $dateFromParts: {
-                        year: '$_id.year',
-                        month: '$_id.month',
-                        day: '$_id.day',
-                      },
-                    },
-                  },
-                },
+                date: "$_id.date",
                 records: 1,
               },
-            },
-          ])
+            }
+          ]).limit(50)
           .toArray();
-
-        return monthRecords;
+        const groupedRecords = monthRecords.map((item) => {
+          const info = item.records.reduce(
+            (reducer: {}, item: any) => {
+              if (item.type === 'in') {
+                // @ts-ignore
+                reducer.inDate = item.date;
+              }
+              if (item.type === 'out') {
+                // @ts-ignore
+                reducer.outDate = item.date;
+              }
+              Object.assign(reducer, item);
+              return reducer;
+            },
+            {
+              inDate: null,
+              outDate: null,
+            }
+          );
+          return info;
+        })
+        return groupedRecords;
       },
     },
     post: {
       handler: async function (request: FastifyRequest, reply: FastifyReply) {
-        const user = request.body as Record;
-        user.date = new Date();
+        const record = request.body as {
+          userId: string;
+          storeId: string;
+          vehicleId: string;
+          date: Date;
+        };
+        record.date = new Date();
+        const user = await users.findOne({
+          _id: new ObjectId(record.userId),
+        });
+        if (!user) {
+          reply.status(404);
+          throw new Error('User not found');
+        }
+        if (user.role.name === 'admin') {
+          reply.status(400);
+          throw new Error('Admins cannot register records');
+        }
+        const store = await stores.findOne({
+          _id: new ObjectId(record.storeId),
+        });
+        if (!store) {
+          reply.status(404);
+          throw new Error('Store not found');
+        }
+        const vehicle = await vehicles.findOne({
+          _id: new ObjectId(record.vehicleId),
+        });
+        if (!vehicle) {
+          reply.status(404);
+          throw new Error('Vehicle not found');
+        }
         // first search if has a record with the same date
         const existingRecords = await records
           .find({
             date: {
               $gte: new Date(
-                `${user.date.getFullYear()}-${
-                  user.date.getMonth() + 1
-                }-${user.date.getDate()}`
+                `${record.date.getFullYear()}-${
+                  record.date.getMonth() + 1
+                }-${record.date.getDate()}`
               ),
               $lt: new Date(
-                `${user.date.getFullYear()}-${user.date.getMonth() + 1}-${
-                  user.date.getDate() + 1
+                `${record.date.getFullYear()}-${record.date.getMonth() + 1}-${
+                  record.date.getDate() + 1
                 }`
               ),
             },
-            userId: user.userId,
-            storeId: user.storeId,
-            vehicleId: user.vehicleId,
+            user: user,
+            store: store,
+            vehicle: vehicle,
           })
           .sort({
             date: -1,
           })
           .toArray();
+        console.log({ existingRecords })
         if (existingRecords.length >= 2) {
+          const outRecord = existingRecords.find(
+            (record) => record.type === 'out'
+          );
+          if (!outRecord) {
+            reply.status(400);
+            throw new Error('Cannot register more than 2 records per day');
+          }
           // update the date of the last record
-          await records.updateOne(
+          const res = await records.updateOne(
             {
-              date: {
-                $gte: new Date(
-                  `${user.date.getFullYear()}-${
-                    user.date.getMonth() + 1
-                  }-${user.date.getDate()}`
-                ),
-                $lt: new Date(
-                  `${user.date.getFullYear()}-${user.date.getMonth() + 1}-${
-                    user.date.getDate() + 1
-                  }`
-                ),
-              },
-              userId: user.userId,
-              storeId: user.storeId,
-              vehicleId: user.vehicleId,
+              _id: new ObjectId(outRecord._id),
             },
             {
               $set: {
-                date: user.date,
+                date: new Date(),
               },
             }
           );
+          console.log(res)
         } else {
           await records.insertOne({
-            userId: user.userId,
-            storeId: user.storeId,
-            vehicleId: user.vehicleId,
+            user: user,
+            store: store,
+            vehicle: vehicle,
             date: new Date(),
             type: existingRecords.length === 0 ? 'in' : 'out',
           });

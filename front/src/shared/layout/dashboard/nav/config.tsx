@@ -59,7 +59,7 @@ const navConfig = [
   },
   {
     title: "Reportes",
-    path: "/dashboard/blog",
+    path: "/reports",
     icon: icon("file_chart_line"),
     role: "admin"
   },

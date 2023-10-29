@@ -1,10 +1,13 @@
 import database from "../config/mongo";
+import {User} from "./User";
+import {Store} from "./Store";
+import {Vehicle} from "./Vehicle";
 
 
 export interface Record {
-  userId: string;
-  storeId: string;
-  vehicleId: string;
+  user: User;
+  store: Store;
+  vehicle: Vehicle;
   type: 'in' | 'out';
   date?: Date;
 }
