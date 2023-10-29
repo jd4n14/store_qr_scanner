@@ -1,28 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import { Stack, TextField, Button } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { BarcodeReader } from "../../../../shared/components/barcode";
+import {useNavigate} from "react-router-dom";
+import {Stack, TextField, Button} from "@mui/material";
+import {LoadingButton} from "@mui/lab";
+import {QRReader} from "../../../../shared/components/qr";
+import {useState} from "react";
+import {useMutation} from "@tanstack/react-query";
+import {loginApi} from "../api.ts";
+import {useAuth} from "../../../../hooks/useAuth.ts";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/", { replace: true });
+  const {login} = useAuth();
+  const [code, setCode] = useState<string>();
+  const createStoreRequest = useMutation({
+    mutationFn: (value: string) => loginApi(value),
+    onSuccess: (data) => {
+      login(data.login);
+      navigate("/", {replace: true});
+    },
+    onError: (error) => {
+      toast(error.message, {icon: '🚨'});
+    }
+  })
+  const onSubmitForm = async (code: string) => {
+    createStoreRequest.mutate(code)
   };
 
   return (
     <Stack spacing={3}>
-      <TextField name="email" label="Codigo de usuario" />
+      <TextField name="email" value={code} onChange={(e) => setCode(e.target.value)} label="Codigo de usuario"/>
       <Button
         fullWidth
         size="large"
         type="submit"
         variant="contained"
-        onClick={handleClick}
+        onClick={() => onSubmitForm(code || '')}
       >
         Iniciar
       </Button>
-      <BarcodeReader onScan={(text) => alert(text)}>
+      <QRReader onScan={(text) => onSubmitForm(text)}>
         {(_status, toggle) => (
           <LoadingButton
             fullWidth
@@ -35,7 +51,7 @@ export default function LoginForm() {
             Iniciar usando QR
           </LoadingButton>
         )}
-      </BarcodeReader>
+      </QRReader>
     </Stack>
   );
 }

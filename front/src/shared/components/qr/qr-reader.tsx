@@ -29,7 +29,7 @@ const BarcodeScanner = ({
   );
 };
 
-export function BarcodeReader({
+export function QRReader({
   children,
   onScan,
 }: {

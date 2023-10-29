@@ -1,0 +1,36 @@
+{
+  "name": "api_v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/env": "^4.2.0",
+    "@fastify/type-provider-typebox": "^3.5.0",
+    "@sinclair/typebox": "^0.31.18",
+    "awilix": "^9.0.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "fastify-autoroutes": "^3.0.2",
+    "mongodb": "6.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.8.2",
+    "gts": "^5.2.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.6.2",
+    "typescript": "~5.2.0"
+  },
+  "scripts": {
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "dev": "tsnd --respawn src/index.ts",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint"
+  }
+}

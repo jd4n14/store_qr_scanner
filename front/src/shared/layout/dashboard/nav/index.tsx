@@ -7,11 +7,7 @@ import navConfig from './config';
 import Scrollbar from '../../../components/scrollbar/Scrollbar';
 import useResponsive from '../../../../hooks/useResponsive';
 import NavSection from '../../../components/nav-section/NavSection';
-
-const account = {
-  displayName: 'Administrador',
-  role: 'Admin',
-}
+import {useAuth} from "../../../../hooks/useAuth.ts";
 
 const NAV_WIDTH = 280;
 
@@ -32,6 +28,7 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
+  const { user } = useAuth();
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -59,18 +56,18 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {user.name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {user.role.name}
               </Typography>
             </Box>
           </StyledAccount>
         </Link>
       </Box>
 
-      <NavSection data={navConfig} />
+      <NavSection data={navConfig.filter((item) => item.role === user.role.name)}/>
 
       <Box sx={{ flexGrow: 1 }} />
 
