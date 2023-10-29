@@ -45,7 +45,7 @@ export const AddStoreForm = (props: AddStoreFormProps) => {
         helperText={formik.touched.name && formik.errors.name}
       />
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
-        <Button type='submit' variant="contained" color="primary">
+        <Button type='submit' variant="contained" color="primary" disabled={formik.isSubmitting}>
           Guardar
         </Button>
       </div>

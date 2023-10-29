@@ -52,6 +52,12 @@ const navConfig = [
     role: "admin"
   },
   {
+    title: "Vehiculos",
+    path: "/vehicles",
+    icon: icon("store_line"),
+    role: "admin"
+  },
+  {
     title: "Reportes",
     path: "/dashboard/blog",
     icon: icon("file_chart_line"),
