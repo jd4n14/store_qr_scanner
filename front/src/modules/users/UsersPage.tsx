@@ -1,21 +1,19 @@
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { AppDialog, Search, ShowQR } from '../../shared/components'
-import { AddUserForm, UserCard } from "./components";
-import { StyledGrid, StyledHeader } from "./styles.tsx";
+import { AppDialog, Search } from '../../shared/components'
+import { AddUserForm } from "./components";
+import { StyledHeader } from "./styles.tsx";
 import { useUsersPage } from "./hooks/useUsersPage.ts";
+import { UserList } from "./components/UserList.tsx";
 
 
 const UsuariosPage = () => {
-  const { allUsersRequest, onSubmit } = useUsersPage();
+  const { isLoadaing, onSubmit, userList, setSearch } = useUsersPage();
 
-  if (allUsersRequest.isLoading) {
+  if (isLoadaing) {
     return <div>Loading...</div>;
   }
-  if (allUsersRequest.isError) {
-    return <div>Error...</div>;
-  }
-  const users = allUsersRequest?.data?.users || [];
+
   return (
     <div>
       <StyledHeader>
@@ -31,16 +29,8 @@ const UsuariosPage = () => {
           {({ toggle }) => <AddUserForm onSubmit={(values) => onSubmit(values, toggle)} />}
         </AppDialog>
       </StyledHeader>
-      <Search />
-      <StyledGrid>
-        {users.map((users) => (
-          <ShowQR key={users._id} title={users.name} value={users._id}>
-            {({ toggle }) => (
-              <UserCard onClick={() => toggle()} user={users} />
-            )}
-          </ShowQR>
-        ))}
-      </StyledGrid>
+      <Search onSearch={setSearch} />
+      <UserList users={userList} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Icon, styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
 import { ShowQR } from "../../shared/components/qr/index.ts";
 import { AppDialog } from "../../shared/components/dialog/index.tsx";
 import { Add } from "@mui/icons-material";
@@ -19,11 +19,9 @@ const StyledGrid = styled("div")(({ theme }) => ({
 
 
 const StorePage: React.FC = () => {
-  const { allStoresRequest, onSubmit } = useStorePage();
-  if (allStoresRequest.isLoading) return <div>Loading...</div>;
-  if (allStoresRequest.isError) return <div>Error</div>;
+  const { isLoading, onSubmit, storeList, onSearch } = useStorePage();
+  if (isLoading) return <div>Loading...</div>;
 
-  const storeList = allStoresRequest.data?.stores || [];
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -39,7 +37,7 @@ const StorePage: React.FC = () => {
           {({ toggle }) => <AddStoreForm onSubmit={(values) => onSubmit(values, toggle)} />}
         </AppDialog>
       </div>
-      <Search />
+      <Search onSearch={onSearch} />
       <StyledGrid>
         {storeList.map((store) => (
           <ShowQR key={store._id} title={store.name} value={store._id}>

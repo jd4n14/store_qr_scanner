@@ -1,21 +1,17 @@
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { AppDialog, ShowQR , Search} from '../../shared/components'
+import { AppDialog, ShowQR, Search } from "../../shared/components";
 import { AddVehicleForm, VehicleCard } from "./components";
 import { StyledGrid, StyledHeader } from "./styles.tsx";
 import { useVehiclesPage } from "./hooks/useVehiclesPage";
 
-
 const VehiclesPage = () => {
-  const { allVehiclesRequest, onSubmit } = useVehiclesPage();
+  const { vehicleList, onSubmit, isLoading, onSearch } = useVehiclesPage();
 
-  if (allVehiclesRequest.isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (allVehiclesRequest.isError) {
-    return <div>Error...</div>;
-  }
-  const vehicles = allVehiclesRequest?.data?.vehicles || [];
+
   return (
     <div>
       <StyledHeader>
@@ -31,13 +27,11 @@ const VehiclesPage = () => {
           {({ toggle }) => <AddVehicleForm onSubmit={(values) => onSubmit(values, toggle)} />}
         </AppDialog>
       </StyledHeader>
-      <Search />
+      <Search onSearch={onSearch} />
       <StyledGrid>
-        {vehicles.map((vehicles) => (
+        {vehicleList.map((vehicles) => (
           <ShowQR key={vehicles._id} title={vehicles.name} value={vehicles._id}>
-            {({ toggle }) => (
-              <VehicleCard onClick={() => toggle()} vehicle={vehicles} />
-            )}
+            {({ toggle }) => <VehicleCard onClick={() => toggle()} vehicle={vehicles} />}
           </ShowQR>
         ))}
       </StyledGrid>

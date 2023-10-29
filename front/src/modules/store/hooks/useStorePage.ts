@@ -1,8 +1,11 @@
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { getAllStoresApi, createNewStoreApi } from "../api";
 import { Store } from "../types";
+import { useState } from "react";
 
 export const useStorePage = () => {
+  const [search, setSearch] = useState("");
+  
   const queryClient = useQueryClient();
   const allStoresRequest = useQuery({
     queryKey: ["stores"],
@@ -21,9 +24,19 @@ export const useStorePage = () => {
     createStoreRequest.mutate(values);
   };
 
+  const storeList = (allStoresRequest?.data?.stores || []).filter((store) => {
+    if (search.trim() === "") {
+      return true;
+    }
+    return store.name.toLowerCase().includes(search.toLowerCase());
+  });
+
   return {
     allStoresRequest,
     createStoreRequest,
-    onSubmit
+    onSubmit,
+    isLoading: allStoresRequest.isLoading,
+    storeList,
+    onSearch: setSearch
   }
 };
