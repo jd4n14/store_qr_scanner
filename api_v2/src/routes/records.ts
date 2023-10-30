@@ -51,7 +51,7 @@ export default function (fastify: FastifyInstance) {
             },
             {
               $project: {
-                _id: 0,
+                _id: 1,
                 date: "$_id.date",
                 records: 1,
               },
@@ -59,25 +59,26 @@ export default function (fastify: FastifyInstance) {
           ]).limit(50)
           .toArray();
         const groupedRecords = monthRecords.map((item) => {
+          const id = Object.values(item._id).join('');
           const info = item.records.reduce(
             (reducer: {}, item: any) => {
               if (item.type === 'in') {
                 // @ts-ignore
-                reducer.inDate = item.date;
+                reducer.entranceTime = item.date;
               }
               if (item.type === 'out') {
                 // @ts-ignore
-                reducer.outDate = item.date;
+                reducer.exitTime = item.date;
               }
               Object.assign(reducer, item);
               return reducer;
             },
             {
-              inDate: null,
-              outDate: null,
+              entranceTime: null,
+              exitTime: null,
             }
           );
-          return info;
+          return { id, ... info };
         })
         return groupedRecords;
       },

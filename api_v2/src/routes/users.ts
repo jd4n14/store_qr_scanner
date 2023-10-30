@@ -17,6 +17,7 @@ export default function (fastify: FastifyInstance) {
         const user = request.body as User;
         const userToInsert = await users.insertOne({
           name: user.name,
+          code: user.code,
           role: {
             name: 'user',
           },

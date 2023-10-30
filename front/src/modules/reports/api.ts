@@ -8,3 +8,7 @@ export const getAllFiltersApi = async () => {
     stores: OptionType[],
   }>
 }
+
+export const getAllRecords = async () => {
+  return await fetchApi('/records') as Promise<any>
+}

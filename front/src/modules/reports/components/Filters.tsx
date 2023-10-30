@@ -17,7 +17,7 @@ export const Filters = () => {
   }
 
   return (
-    <Stack spacing={2} direction="row">
+    <Stack spacing={2} direction="row" sx={(theme) => ({ marginBottom: theme.spacing(2) })}>
       <CustomAutocomplete onChange={() => {}} optionList={filtersQuery.data?.users || []} title="Usuario" />
       <CustomAutocomplete onChange={() => {}} optionList={filtersQuery.data?.stores || []} title="Tienda" />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>

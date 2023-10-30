@@ -1,8 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { Filters } from "./components/Filters.tsx";
+import { ReportsTable } from "./components/ReportsTable.tsx";
 import { StyledHeader } from "./styles.tsx";
-//2023-10-29T14:22:53.532Z
-// "2023-10-29T14:20:58.757Z
+import { getAllRecords } from "./api.ts";
+
 const ReportsPage = () => {
+  const getRecordsQuery = useQuery({
+    queryKey: ["records"],
+    queryFn: getAllRecords,
+  });
+  if (getRecordsQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <div>
@@ -11,6 +20,7 @@ const ReportsPage = () => {
         </StyledHeader>
         <Filters />
       </div>
+      <ReportsTable records={getRecordsQuery.data} />
     </div>
   );
 };

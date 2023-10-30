@@ -6,6 +6,7 @@ import {styled} from "@mui/material/styles";
 
 const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
+  code: yup.string().required("El código es requerido"),
 });
 
 interface AddUserFormProps {
@@ -25,7 +26,8 @@ export const AddUserForm = (props: AddUserFormProps) => {
   const formik = useFormik({
     initialValues: Object.assign(
       {
-        name: ""
+        name: "",
+        code: "",
       },
       props.initialValues
     ),
@@ -43,6 +45,16 @@ export const AddUserForm = (props: AddUserFormProps) => {
         onChange={formik.handleChange}
         error={formik.touched.name && Boolean(formik.errors.name)}
         helperText={formik.touched.name && formik.errors.name}
+      />
+      <TextField
+        fullWidth
+        id="code"
+        name="code"
+        label="Código"
+        value={formik.values.code}
+        onChange={formik.handleChange}
+        error={formik.touched.code && Boolean(formik.errors.code)}
+        helperText={formik.touched.code && formik.errors.code}
       />
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
         <Button type='submit' variant="contained" color="primary" disabled={formik.isSubmitting}>
