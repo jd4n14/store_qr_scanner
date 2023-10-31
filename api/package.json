@@ -28,7 +28,7 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
-    "compile": "tsc",
+    "build": "tsc --outDir ./dist",
     "fix": "gts fix",
     "dev": "tsnd --respawn src/index.ts",
     "prepare": "yarn run compile",
