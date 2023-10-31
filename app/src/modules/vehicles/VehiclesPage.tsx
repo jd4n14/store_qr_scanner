@@ -4,6 +4,7 @@ import { AppDialog, ShowQR, Search } from "../../shared/components";
 import { AddVehicleForm, VehicleCard } from "./components";
 import { StyledGrid, StyledHeader } from "./styles.tsx";
 import { useVehiclesPage } from "./hooks/useVehiclesPage";
+import { Helmet } from "react-helmet-async";
 
 const VehiclesPage = () => {
   const { vehicleList, onSubmit, isLoading, onSearch } = useVehiclesPage();
@@ -14,6 +15,9 @@ const VehiclesPage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title> Vehiculos </title>
+      </Helmet>
       <StyledHeader>
         <Typography variant="h3">Vehiculos</Typography>
         <AppDialog

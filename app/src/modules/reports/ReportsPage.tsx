@@ -7,6 +7,7 @@ import { useAtomValue } from "jotai";
 import { filtersAtom } from "./store.ts";
 import { useEffect } from "react";
 import { Typography } from "@mui/material";
+import { Helmet } from "react-helmet-async";
 
 const ReportsPage = () => {
   const filters = useAtomValue(filtersAtom);
@@ -16,7 +17,7 @@ const ReportsPage = () => {
     // run refetch when filters change
     refetchOnMount: false,
   });
-  
+
   useEffect(() => {
     getRecordsQuery.refetch();
   }, [filters]);
@@ -27,6 +28,9 @@ const ReportsPage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title> Reportes </title>
+      </Helmet>
       <div>
         <StyledHeader>
           <Typography variant="h3">Reportes</Typography>

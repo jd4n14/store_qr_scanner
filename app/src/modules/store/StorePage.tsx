@@ -7,6 +7,7 @@ import { AddStoreForm } from "./component/AddStoreForm.tsx";
 import { useStorePage } from "./hooks/useStorePage.ts";
 import { StoreCard } from "./component/StoreCard.tsx";
 import { Search } from "../../shared/components/index.ts";
+import { Helmet } from "react-helmet-async";
 
 const StyledGrid = styled("div")(({ theme }) => ({
   gap: theme.spacing(2),
@@ -17,13 +18,15 @@ const StyledGrid = styled("div")(({ theme }) => ({
   },
 }));
 
-
 const StorePage: React.FC = () => {
   const { isLoading, onSubmit, storeList, onSearch } = useStorePage();
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <div>
+      <Helmet>
+        <title> Tiendas </title>
+      </Helmet>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Typography variant="h3">Tiendas</Typography>
         <AppDialog

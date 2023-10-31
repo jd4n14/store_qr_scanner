@@ -17,7 +17,7 @@ export default function Page404() {
   return (
     <>
       <Helmet>
-        <title> 404 Pagina no encontrada </title>
+        <title> Inicia de nuevo </title>
       </Helmet>
 
       <Container>

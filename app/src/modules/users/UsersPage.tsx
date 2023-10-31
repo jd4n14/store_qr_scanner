@@ -1,11 +1,11 @@
 import { Button, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { AppDialog, Search } from '../../shared/components'
+import { AppDialog, Search } from "../../shared/components";
 import { AddUserForm } from "./components";
 import { StyledHeader } from "./styles.tsx";
 import { useUsersPage } from "./hooks/useUsersPage.ts";
 import { UserList } from "./components/UserList.tsx";
-
+import { Helmet } from "react-helmet-async";
 
 const UsuariosPage = () => {
   const { isLoadaing, onSubmit, userList, setSearch } = useUsersPage();
@@ -16,6 +16,9 @@ const UsuariosPage = () => {
 
   return (
     <div>
+      <Helmet>
+        <title> Usuarios </title>
+      </Helmet>
       <StyledHeader>
         <Typography variant="h3">Usuarios</Typography>
         <AppDialog
