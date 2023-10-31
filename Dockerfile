@@ -5,5 +5,5 @@ COPY ./app /usr/src/app/app
 WORKDIR /usr/src/app
 RUN cd api && npm install && npm run build
 RUN cd app && npm install && npm run build
-
+EXPOSE 3000
 CMD [ "node", "api/dist/index.js"]
