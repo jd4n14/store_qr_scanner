@@ -1,4 +1,4 @@
-const baseUrl = import.meta.env.VITE_API_URL;
+import { fetchApi } from "../../../config/fetch";
 
 interface Login {
   userId: string;
@@ -8,18 +8,12 @@ interface Login {
 }
 
 export const loginApi = async (code: string) => {
-  const request = await fetch(`${baseUrl}/login`, {
+  const request = await fetchApi(`/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({code})
   });
-  if (!request.ok) {
-    const error = await request.json();
-    throw new Error(error.message);
-  }
-  return await request.json() as Promise<{
-    login: Login
-  }>;
+  return request as Login;
 }
