@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { memo } from 'react';
 import { Box } from '@mui/material';
-import { StyledRootScrollbar, StyledScrollbar } from './styles';
+import { StyledRootScrollbar } from './styles';
 
 Scrollbar.propTypes = {
   sx: PropTypes.object,
@@ -20,12 +20,9 @@ function Scrollbar({ children, sx, ...other }) {
       </Box>
     );
   }
-  const AnyStyledRootScrollbar = StyledScrollbar as any;
   return (
     <StyledRootScrollbar>
-      <AnyStyledRootScrollbar timeout={500} clickOnTrack={false} sx={sx} {...other}>
-        {children}
-      </AnyStyledRootScrollbar>
+      {children}
     </StyledRootScrollbar>
   );
 }

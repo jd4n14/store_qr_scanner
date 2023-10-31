@@ -56,18 +56,18 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {user.name}
+                {user?.name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {user.role.name}
+                {user?.role?.name}
               </Typography>
             </Box>
           </StyledAccount>
         </Link>
       </Box>
 
-      <NavSection data={navConfig.filter((item) => item.role === user.role.name)}/>
+      <NavSection data={navConfig.filter((item) => item.role === user?.role?.name)}/>
 
       <Box sx={{ flexGrow: 1 }} />
 

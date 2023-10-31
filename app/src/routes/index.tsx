@@ -1,33 +1,78 @@
+import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.tsx";
-import HomePage from "../modules/dashboard/HomePage.tsx";
-import LoginPage from "../modules/auth/login/LoginPage";
 import DashboardLayout from "../shared/layout/dashboard";
-import StorePage from "../modules/store/StorePage.tsx";
 import Page404 from "../modules/app/Page404.tsx";
-import UsersPage from "../modules/users/UsersPage.tsx";
 import LogoutPage from "../modules/app/Logout.tsx";
-import VehiclesPage from "../modules/vehicles/VehiclesPage.tsx";
-import ReportsPage from "../modules/reports/ReportsPage.tsx";
+
+const LazyHomePage = lazy(() => import("../modules/dashboard/HomePage.tsx"));
+const LazyStorePage = lazy(() => import("../modules/store/StorePage.tsx"));
+const LazyUsersPage = lazy(() => import("../modules/users/UsersPage.tsx"));
+const LazyVehiclesPage = lazy(() => import("../modules/vehicles/VehiclesPage.tsx"));
+const LazyReportsPage = lazy(() => import("../modules/reports/ReportsPage.tsx"));
+const LazyLoginPage = lazy(() => import("../modules/auth/login/LoginPage.tsx"));
 
 export default function Router() {
   const routes = useRoutes([
     {
       path: "",
-      element: <DashboardLayout />,
+      element: (
+        <Suspense>
+          <DashboardLayout />
+        </Suspense>
+      ),
       children: [
         { element: <Navigate to="/home" />, index: true },
-        { path: "/home", element: <ProtectedRoute component={<HomePage />} /> },
-        { path: "/stores", element: <ProtectedRoute component={<StorePage />} /> },
-        { path: "/users", element: <ProtectedRoute component={<UsersPage />} /> },
-        { path: "/vehicles", element: <ProtectedRoute component={<VehiclesPage />} /> },
-        { path: "/reports", element: <ProtectedRoute component={<ReportsPage />} /> },
+        {
+          path: "/home",
+          element: (
+            <Suspense>
+              <ProtectedRoute component={<LazyHomePage />} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/stores",
+          element: (
+            <Suspense>
+              <ProtectedRoute component={<LazyStorePage />} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/users",
+          element: (
+            <Suspense>
+              <ProtectedRoute component={<LazyUsersPage />} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/vehicles",
+          element: (
+            <Suspense>
+              <ProtectedRoute component={<LazyVehiclesPage />} />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/reports",
+          element: (
+            <Suspense>
+              <ProtectedRoute component={<LazyReportsPage />} />
+            </Suspense>
+          ),
+        },
         { path: "*", element: <ProtectedRoute component={<Page404 />} /> },
       ],
     },
     {
       path: "login",
-      element: <LoginPage />,
+      element: (
+        <Suspense>
+          <LazyLoginPage />
+        </Suspense>
+      ),
     },
     {
       path: "logout",
