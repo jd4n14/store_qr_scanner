@@ -7,12 +7,12 @@ export const getAllUsersApi = () => {
   }>;
 };
 
-export const createNewUserApi = async ({ name }: Pick<User, "name">) => {
+export const createNewUserApi = async ({ name, code }: Omit<User, "_id">) => {
   return fetchApi("/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ name, code }),
   }) as Promise<void>;
 };

@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OptionType } from "../types";
 
 interface ICustomAutocompleteProps {
@@ -16,6 +16,10 @@ export const CustomAutocomplete = (props: ICustomAutocompleteProps) => {
     setValue(value);
     props.onChange(value as OptionType);
   }
+
+  useEffect(() => {
+    setValue(props.value || null);
+  }, [props.value])
 
   return (
     <Autocomplete

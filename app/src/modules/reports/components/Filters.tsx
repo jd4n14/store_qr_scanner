@@ -20,7 +20,15 @@ export const Filters = () => {
     return <div>Loading...</div>;
   }
 
-  const onChangeInput = (field: string, value: string) => {
+  const onChangeInput = (field: string, value: string | null) => {
+    if (value === null) {
+      setFilters((prev) => {
+        const newFilters = { ...prev };
+        delete newFilters[field];
+        return newFilters;
+      });
+      return;
+    }
     setFilters((prev) => ({
       ...prev,
       [field]: value,
@@ -34,13 +42,13 @@ export const Filters = () => {
   return (
     <Stack spacing={2} direction="row" sx={(theme) => ({ marginBottom: theme.spacing(2) })}>
       <CustomAutocomplete
-        onChange={(value) => onChangeInput("userId", value.value)}
+        onChange={(value) => onChangeInput("userId", value?.value || null )}
         optionList={filtersQuery.data?.users || []}
         value={filtersQuery.data?.users.find((user) => user.value === filters.userId) || null}
         title="Usuario"
       />
       <CustomAutocomplete
-        onChange={(value) => onChangeInput("storeId", value.value)}
+        onChange={(value) => onChangeInput("storeId", value?.value || null )}
         optionList={filtersQuery.data?.stores || []}
         value={filtersQuery.data?.stores.find((store) => store.value === filters.storeId) || null}
         title="Tienda"

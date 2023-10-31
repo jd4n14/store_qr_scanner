@@ -6,12 +6,15 @@ import { getAllRecords } from "./api.ts";
 import { useAtomValue } from "jotai";
 import { filtersAtom } from "./store.ts";
 import { useEffect } from "react";
+import { Typography } from "@mui/material";
 
 const ReportsPage = () => {
   const filters = useAtomValue(filtersAtom);
   const getRecordsQuery = useQuery({
     queryKey: ["records"],
     queryFn: () => getAllRecords(filters),
+    // run refetch when filters change
+    refetchOnMount: false,
   });
   
   useEffect(() => {
@@ -26,7 +29,7 @@ const ReportsPage = () => {
     <div>
       <div>
         <StyledHeader>
-          <h1>Reportes</h1>
+          <Typography variant="h3">Reportes</Typography>
         </StyledHeader>
         <Filters />
       </div>

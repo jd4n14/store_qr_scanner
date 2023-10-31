@@ -1,20 +1,19 @@
+import { fetchApi } from "../../config/fetch";
 
-const baseUrl = import.meta.env.VITE_API_URL;
 interface RecordRequest {
   userId: string;
   vehicleId: string;
+  storeId: string;
 }
 export const createRecordApi = async (data: RecordRequest) => {
-  const request = await fetch(`${baseUrl}/records`, {
+  const request = await fetchApi(`/records`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   });
-  const response = await request.json();
-  if (request.ok) {
-    throw new Error(response.message);
+  if (!request.ok) {
+    throw new Error("Error al crear el registro");
   }
-  return response
 }

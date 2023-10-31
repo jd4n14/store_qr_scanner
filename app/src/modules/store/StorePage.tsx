@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, styled } from "@mui/material";
+import { Button, Typography, styled } from "@mui/material";
 import { ShowQR } from "../../shared/components/qr/index.ts";
 import { AppDialog } from "../../shared/components/dialog/index.tsx";
 import { Add } from "@mui/icons-material";
@@ -25,7 +25,7 @@ const StorePage: React.FC = () => {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h1>Tiendas</h1>
+        <Typography variant="h3">Tiendas</Typography>
         <AppDialog
           trigger={({ toggle }) => (
             <Button variant="contained" startIcon={<Add />} onClick={() => toggle()}>

@@ -142,16 +142,8 @@ export default function (fastify: FastifyInstance) {
         const existingRecords = await records
           .find({
             date: {
-              $gte: new Date(
-                `${record.date.getFullYear()}-${
-                  record.date.getMonth() + 1
-                }-${record.date.getDate()}`
-              ),
-              $lt: new Date(
-                `${record.date.getFullYear()}-${record.date.getMonth() + 1}-${
-                  record.date.getDate() + 1
-                }`
-              ),
+              $gte: toDate(startOfDay(new Date())),
+              $lte: toDate(endOfDay(new Date())),
             },
             user: user,
             store: store,
@@ -161,7 +153,6 @@ export default function (fastify: FastifyInstance) {
             date: -1,
           })
           .toArray();
-        console.log({existingRecords});
         if (existingRecords.length >= 2) {
           const outRecord = existingRecords.find(
             record => record.type === 'out'

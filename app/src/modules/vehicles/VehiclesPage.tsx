@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { AppDialog, ShowQR, Search } from "../../shared/components";
 import { AddVehicleForm, VehicleCard } from "./components";
@@ -15,7 +15,7 @@ const VehiclesPage = () => {
   return (
     <div>
       <StyledHeader>
-        <h1>Vehiculos</h1>
+        <Typography variant="h3">Vehiculos</Typography>
         <AppDialog
           trigger={({ toggle }) => (
             <Button variant="contained" startIcon={<Add />} onClick={() => toggle()}>

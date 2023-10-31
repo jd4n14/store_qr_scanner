@@ -22,6 +22,7 @@ export const useAuth = () => {
     }
   }, []);
 
+
   return {
     user,
     login,

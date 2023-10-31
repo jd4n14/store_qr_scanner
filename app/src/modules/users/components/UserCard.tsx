@@ -1,4 +1,4 @@
-import { styled, Card, Icon } from "@mui/material";
+import { styled, Card, Icon, Typography } from "@mui/material";
 import { Person } from "@mui/icons-material";
 import { User } from "../types";
 
@@ -27,7 +27,14 @@ export const UserCard = (props: UserCardProps) => {
       })}
       onClick={props.onClick}
     >
-      <h2>{props.user.name}</h2>
+      <div>
+        <Typography variant="h6" sx={{ textAlign: "left" }}>
+          {props.user.name}
+        </Typography>
+        <Typography variant="body2" sx={{ textAlign: "left" }}>
+          {props.user?.role?.name === "admin" ? "Administrador" : "Usuario"}
+        </Typography>
+      </div>
       <Icon>
         <Person />
       </Icon>

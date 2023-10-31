@@ -9,8 +9,9 @@ export const StyledGrid = styled("div")(({ theme }) => ({
   },
 }));
 
-export const StyledHeader = styled("div")(() => ({
+export const StyledHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  marginBottom: theme.spacing(2)
 }));

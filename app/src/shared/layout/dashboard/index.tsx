@@ -16,7 +16,7 @@ const Main = styled('div')(() => ({
   flexGrow: 1,
   overflow: 'auto',
   minHeight: '100%',
-  paddingTop: APP_BAR_MOBILE + 20,
+  paddingTop: APP_BAR_MOBILE + 30,
   paddingLeft: 20,
   paddingRight: 20,
 }));

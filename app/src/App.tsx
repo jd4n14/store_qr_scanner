@@ -11,7 +11,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <BrowserRouter>
-          <ThemeProvider>
+          <ThemeProvider >
             <Router />
           </ThemeProvider>
         </BrowserRouter>

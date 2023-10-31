@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { AppDialog, Search } from '../../shared/components'
 import { AddUserForm } from "./components";
@@ -17,7 +17,7 @@ const UsuariosPage = () => {
   return (
     <div>
       <StyledHeader>
-        <h1>Usuarios</h1>
+        <Typography variant="h3">Usuarios</Typography>
         <AppDialog
           trigger={({ toggle }) => (
             <Button variant="contained" startIcon={<Add />} onClick={() => toggle()}>

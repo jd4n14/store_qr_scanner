@@ -7,5 +7,9 @@ export const fetchApi = async (url: string, options: RequestInit = {}) => {
     const error = await response.json();
     throw new Error(error.message);
   }
+  // if response code is 201, return empty object
+  if (response.status === 201) {
+    return { ok: true };
+  }
   return response.json();
 }

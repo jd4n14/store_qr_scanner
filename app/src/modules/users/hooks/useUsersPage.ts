@@ -13,14 +13,14 @@ export const useUsersPage = () => {
   });
 
   const createUserRequest = useMutation({
-    mutationFn: (values: Pick<User, 'name'>) => createNewUserApi(values),
+    mutationFn: (values: Omit<User, '_id'>) => createNewUserApi(values),
     mutationKey: ["createUser"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 
-  const onSubmit = (values: Pick<User, 'name'> , toggle: () => void) => {
+  const onSubmit = (values: Omit<User, '_id'> , toggle: () => void) => {
     toggle();
     return createUserRequest.mutateAsync(values);
   };

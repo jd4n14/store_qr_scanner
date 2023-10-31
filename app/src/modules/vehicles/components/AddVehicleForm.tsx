@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { InferType } from "yup";
 import { styled } from "@mui/material/styles";
+import { useEffect, useRef } from "react";
 
 const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
@@ -18,10 +19,10 @@ const StyledForm = styled("form")(({ theme }) => ({
   flexDirection: "column",
   gap: theme.spacing(2),
   padding: theme.spacing(2),
-  minWidth: "450px",
 }));
 
 export const AddVehicleForm = (props: AddVehicleFormProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const formik = useFormik({
     initialValues: Object.assign(
       {
@@ -32,9 +33,15 @@ export const AddVehicleForm = (props: AddVehicleFormProps) => {
     validationSchema: validationSchema,
     onSubmit: props.onSubmit,
   });
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [])
+
   return (
     <StyledForm onSubmit={formik.handleSubmit}>
       <TextField
+        inputRef={inputRef}
         fullWidth
         id="name"
         name="name"
