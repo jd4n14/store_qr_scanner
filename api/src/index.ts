@@ -25,6 +25,10 @@ const start = async () => {
     app.get("/", async (req, reply) => {
       return reply.sendFile("index.html");
     });
+    // redirect all other routes to index.html
+    app.setNotFoundHandler(async (req, reply) => {
+      return reply.sendFile("index.html");
+    });
 
     await app.listen({ port: 3000, host: "0.0.0.0" });
   } catch (err) {

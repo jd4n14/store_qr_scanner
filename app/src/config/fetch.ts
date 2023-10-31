@@ -1,6 +1,6 @@
 // wrapper for fetch
 //
-const baseUrl = import.meta.env.VITE_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL || 'api';
 export const fetchApi = async (url: string, options: RequestInit = {}) => {
   const response = await fetch(`${baseUrl}${url}`, options);
   if (!response.ok) {
