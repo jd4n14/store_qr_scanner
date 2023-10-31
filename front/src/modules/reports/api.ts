@@ -1,6 +1,11 @@
 import { fetchApi } from "../../config/fetch"
 import { OptionType } from "./types"
 
+type GetRecordsParams = {
+  userId?: string,
+  storeId?: string,
+  date?: string,
+}
 
 export const getAllFiltersApi = async () => {
   return await fetchApi('/filters') as Promise<{
@@ -9,6 +14,8 @@ export const getAllFiltersApi = async () => {
   }>
 }
 
-export const getAllRecords = async () => {
-  return await fetchApi('/records') as Promise<any>
+export const getAllRecords = async (params?: GetRecordsParams) => {
+  const searchQuery = new URLSearchParams(params);
+  const url = `/records?${searchQuery.toString()}`
+  return await fetchApi(url) as Promise<any>
 }

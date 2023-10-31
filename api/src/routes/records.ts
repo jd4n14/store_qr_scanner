@@ -1,37 +1,57 @@
 import {FastifyInstance, FastifyRequest, FastifyReply} from 'fastify';
 import {Resource} from 'fastify-autoroutes';
 import records, {Record} from '../models/Record';
-import users from "../models/User";
-import stores from "../models/Store";
-import vehicles from "../models/Vehicle";
-import {ObjectId} from "mongodb";
+import users from '../models/User';
+import stores from '../models/Store';
+import vehicles from '../models/Vehicle';
+import {ObjectId} from 'mongodb';
+import {startOfMonth, endOfMonth, toDate, startOfDay, endOfDay} from 'date-fns';
 
 export default function (fastify: FastifyInstance) {
   return <Resource>{
     get: {
       handler: async function (request: FastifyRequest, reply: FastifyReply) {
-        const currentMonth = new Date().getMonth() + 1;
-        const currentYear = new Date().getFullYear();
+        const queryParams = request.query as {
+          userId?: string;
+          storeId?: string;
+          date?: string;
+        };
         // get all records from the current month and group them by date (same day)
+        const matchQuery: {} = {
+          date: {
+            $gte: toDate(startOfMonth(new Date())),
+            $lt: toDate(endOfMonth(new Date())),
+          },
+        };
+        if (queryParams.userId) {
+          // @ts-ignore
+          matchQuery['user._id'] = new ObjectId(queryParams.userId);
+        }
+        if (queryParams.storeId) {
+          // @ts-ignore
+          matchQuery['store._id'] = new ObjectId(queryParams.storeId);
+        }
+        if (queryParams.date) {
+          // @ts-ignore
+          matchQuery['date'] = {
+            $gte: toDate(startOfDay(new Date(queryParams.date))),
+            $lte: toDate(endOfDay(new Date(queryParams.date))),
+          };
+        }
         const monthRecords = await records
           .aggregate([
             {
-              $match: {
-                date: {
-                  $gte: new Date(`${currentYear}-${currentMonth}-01`),
-                  $lt: new Date(`${currentYear}-${currentMonth + 1}-01`),
-                },
-              },
+              $match: matchQuery,
             },
             {
               $group: {
                 _id: {
-                  userId: "$user._id",
-                  storeId: "$store._id",
-                  vehicleId: "$vehicle._id",
+                  userId: '$user._id',
+                  storeId: '$store._id',
+                  vehicleId: '$vehicle._id',
                   date: {
-                    $dateToString: {format: "%Y-%m-%d", date: "$date"}
-                  }
+                    $dateToString: {format: '%Y-%m-%d', date: '$date'},
+                  },
                 },
                 records: {
                   $push: {
@@ -52,13 +72,14 @@ export default function (fastify: FastifyInstance) {
             {
               $project: {
                 _id: 1,
-                date: "$_id.date",
+                date: '$_id.date',
                 records: 1,
               },
-            }
-          ]).limit(50)
+            },
+          ])
+          .limit(50)
           .toArray();
-        const groupedRecords = monthRecords.map((item) => {
+        const groupedRecords = monthRecords.map(item => {
           const id = Object.values(item._id).join('');
           const info = item.records.reduce(
             (reducer: {}, item: any) => {
@@ -78,8 +99,8 @@ export default function (fastify: FastifyInstance) {
               exitTime: null,
             }
           );
-          return { id, ... info };
-        })
+          return {id, ...info};
+        });
         return groupedRecords;
       },
     },
@@ -140,10 +161,10 @@ export default function (fastify: FastifyInstance) {
             date: -1,
           })
           .toArray();
-        console.log({ existingRecords })
+        console.log({existingRecords});
         if (existingRecords.length >= 2) {
           const outRecord = existingRecords.find(
-            (record) => record.type === 'out'
+            record => record.type === 'out'
           );
           if (!outRecord) {
             reply.status(400);
@@ -160,7 +181,7 @@ export default function (fastify: FastifyInstance) {
               },
             }
           );
-          console.log(res)
+          console.log(res);
         } else {
           await records.insertOne({
             user: user,

@@ -19,7 +19,13 @@ export default function (fastify: FastifyInstance) {
         // list of filters:
         // * users
         // * stores
-        const userList = await users.find().toArray();
+        const userList = await users
+          .find({
+            role: {
+              name: 'user',
+            },
+          })
+          .toArray();
         const storeList = await stores.find().toArray();
         return {
           users: userList.map(user => ({

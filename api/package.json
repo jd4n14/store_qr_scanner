@@ -1,28 +1,37 @@
 {
-  "dependencies": {
-    "@fastify/websocket": "^8.2.0",
-    "@prisma/client": "^5.3.1",
-    "@trpc/client": "^10.38.5",
-    "@trpc/server": "^10.38.5",
-    "dotenv": "^16.3.1",
-    "fastify": "^4.23.2",
-    "superjson": "^1.13.3",
-    "typescript": "^5.2.2",
-    "zod": "^3.22.3"
-  },
-  "name": "api",
+  "name": "api_v2",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "dependencies": {
+    "@fastify/autoload": "^5.8.0",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/env": "^4.2.0",
+    "@fastify/type-provider-typebox": "^3.5.0",
+    "@sinclair/typebox": "^0.31.18",
+    "awilix": "^9.0.0",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "fastify-autoroutes": "^3.0.2",
+    "mongodb": "6.1"
+  },
   "devDependencies": {
-    "@types/node": "^20.8.2",
-    "esbuild": "^0.19.4",
-    "prisma": "^5.3.1",
-    "tsx": "^3.13.0"
+    "@types/node": "20.8.2",
+    "gts": "^5.2.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tslib": "^2.6.2",
+    "typescript": "~5.2.0"
   },
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --outdir=dist --sourcemap",
-    "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js"
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "dev": "tsnd --respawn src/index.ts",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint"
   }
 }
