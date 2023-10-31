@@ -2,6 +2,8 @@ import Fastify from 'fastify';
 import autoload from '@fastify/autoload';
 import * as path from 'node:path'
 import fastifyCors from "@fastify/cors";
+import path from 'node:path';
+import fastifyStatic from '@fastify/static';
 
 const app = Fastify({
   logger: true
@@ -16,6 +18,9 @@ const start = async () => {
     app.register(fastifyCors, {
       origin: '*',
       allowedHeaders: ['Content-Type', 'Authorization']
+    });
+    app.register(fastifyStatic, {
+      root: path.join(__dirname, '../front'),
     })
     await app.listen({port: 3000})
   } catch (err) {
