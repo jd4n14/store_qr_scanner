@@ -2,6 +2,7 @@
 //
 const baseUrl = import.meta.env.VITE_API_URL || 'https://registros.cleantechpro.com.mx/api';
 export const fetchApi = async (url: string, options: RequestInit = {}) => {
+  console.log({baseUrl})
   const response = await fetch(`${baseUrl}${url}`, options);
   if (!response.ok) {
     const error = await response.json();
