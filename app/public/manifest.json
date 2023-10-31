@@ -3,7 +3,7 @@
   "short_name": "Rg",
   "theme_color": "#fff",
   "background_color": "#fff",
-  "display": "browser",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "https://registros.cleantechpro.com.mx/home",
