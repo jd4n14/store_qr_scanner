@@ -1,7 +1,7 @@
-import { forwardRef } from 'react';
-import { Box } from '@mui/material';
+import { forwardRef } from "react";
+import { Box } from "@mui/material";
 
-const SvgColor = forwardRef(({ src, sx, ...other }, ref) => (
+const SvgColor = forwardRef(({ src, sx, ...other }: { src: any; sx: any }, ref) => (
   <Box
     component="span"
     className="svg-color"
@@ -18,62 +18,56 @@ const SvgColor = forwardRef(({ src, sx, ...other }, ref) => (
     {...other}
   />
 ));
-const icon = (name) => (
-  <SvgColor
-    src={`/assets/icons/navbar/${name}.svg`}
-    sx={{ width: 1, height: 1 }}
-  />
-);
-
+const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
   {
     title: "Home",
     path: "",
-    icon: icon('home_line'),
+    icon: icon("home_line"),
     role: "admin",
   },
   {
     title: "Star Page",
     path: "",
-    icon: icon('home_line'),
+    icon: icon("home_line"),
     role: "user",
   },
   {
     title: "Usuarios",
     path: "/users",
     icon: icon("user_line"),
-    role: "admin"
+    role: "admin",
   },
   {
     title: "Tiendas",
     path: "/stores",
     icon: icon("store_line"),
-    role: "admin"
+    role: "admin",
   },
   {
     title: "Vehiculos",
     path: "/vehicles",
     icon: icon("store_line"),
-    role: "admin"
+    role: "admin",
   },
   {
     title: "Reportes",
     path: "/reports",
     icon: icon("file_chart_line"),
-    role: "admin"
+    role: "admin",
   },
   {
     title: "Cerrar sesion",
     path: "/logout",
     icon: icon("file_chart_line"),
-    role: "admin"
+    role: "admin",
   },
   {
     title: "Cerrar sesion",
     path: "/logout",
     icon: icon("file_chart_line"),
-    role: "user"
+    role: "user",
   },
 ];
 

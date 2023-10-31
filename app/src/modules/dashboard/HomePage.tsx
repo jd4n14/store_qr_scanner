@@ -128,7 +128,7 @@ const TileMap: TileMapType[] = [
         } as any)
       }
       return <QRReader onScan={(value) => onSubmitRecord(value)}>
-        {(status, toggle) => (
+        {(_status, toggle) => (
           <Tile
             title="Escanear tienda"
             onClick={toggle}
@@ -140,11 +140,11 @@ const TileMap: TileMapType[] = [
   },
   {
     role: "user",
-    component: function () {
+    component: function UserComponent () {
       const { vehicleId, setVehicleId } = useAuth();
       if (vehicleId) return null;
       return <QRReader onScan={(value) => setVehicleId(value)}>
-        {(status, toggle) => (
+        {(_status, toggle) => (
           <Tile
             title="Escanear vehiculo"
             onClick={toggle}

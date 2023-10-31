@@ -20,12 +20,12 @@ function Scrollbar({ children, sx, ...other }) {
       </Box>
     );
   }
-
+  const AnyStyledRootScrollbar = StyledScrollbar as any;
   return (
     <StyledRootScrollbar>
-      <StyledScrollbar timeout={500} clickOnTrack={false} sx={sx} {...other}>
+      <AnyStyledRootScrollbar timeout={500} clickOnTrack={false} sx={sx} {...other}>
         {children}
-      </StyledScrollbar>
+      </AnyStyledRootScrollbar>
     </StyledRootScrollbar>
   );
 }
