@@ -172,7 +172,6 @@ export default function (fastify: FastifyInstance) {
               },
             }
           );
-          console.log(res);
         } else {
           await records.insertOne({
             user: user,

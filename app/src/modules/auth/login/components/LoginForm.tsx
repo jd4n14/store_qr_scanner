@@ -35,6 +35,7 @@ export default function LoginForm() {
         type="submit"
         variant="contained"
         onClick={() => onSubmitForm(code || '')}
+        disabled={!code?.length}
       >
         Iniciar
       </Button>

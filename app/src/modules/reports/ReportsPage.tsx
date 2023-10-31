@@ -35,7 +35,7 @@ const ReportsPage = () => {
         <StyledHeader>
           <Typography variant="h3">Reportes</Typography>
         </StyledHeader>
-        <Filters />
+        <Filters records={getRecordsQuery.data} />
       </div>
       <ReportsTable records={getRecordsQuery.data} />
     </div>

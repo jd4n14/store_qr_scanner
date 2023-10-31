@@ -7,21 +7,21 @@ const columns: GridColDef[] = [
   { field: "id", headerName: "Id" },
   {
     field: "storeName",
-    headerName: "Nombre de la tienda",
+    headerName: "Tienda",
     valueGetter: (params: GridValueGetterParams) => params.row.store?.name || "-",
     flex: 1,
     minWidth: 150,
   },
   {
     field: "userName",
-    headerName: "Nombre de usuario",
+    headerName: "Usuario",
     valueGetter: (params: GridValueGetterParams) => params.row.user?.name || "",
     flex: 1,
     minWidth: 150,
   },
   {
     field: "entranceTime",
-    headerName: "Hora de entrada",
+    headerName: "Entrada",
     type: "date",
     valueFormatter: (params: GridValueFormatterParams<string>) => {
       return datefns.format(new Date(params.value), "dd/MM/yyyy HH:mm:ss");
@@ -31,7 +31,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "exitTime",
-    headerName: "Hora de salida",
+    headerName: "Salida",
     type: "date",
     valueFormatter: (params: GridValueFormatterParams<string>) => {
       if (!params.value) return "-";
@@ -49,7 +49,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-type RecordType = {
+export type RecordType = {
   id: number;
   userCode: string;
   userName: string;
