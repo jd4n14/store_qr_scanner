@@ -1,11 +1,5 @@
 import { fetchApi } from "../../../config/fetch";
 
-interface Login {
-  userId: string;
-  role: {
-    name: string
-  }
-}
 
 export const loginApi = async (code: string) => {
   const request = await fetchApi(`/login`, {
@@ -15,5 +9,5 @@ export const loginApi = async (code: string) => {
     },
     body: JSON.stringify({code})
   });
-  return request as Login;
+  return request as any;
 }
