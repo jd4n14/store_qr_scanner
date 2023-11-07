@@ -41,4 +41,28 @@ export default function (fastify: FastifyInstance) {
     },
   );
 
+  fastify.put(
+    '/vehicles/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const vehicle = request.body as Vehicle;
+      const params = request.params as { id: string };
+      const vehicleToValidate = await vehicles.findOne({
+        _id: new ObjectId(params.id),
+      });
+      if (!vehicleToValidate) {
+        reply.status(404);
+        return {
+          error: 'Vehicle not found',
+        };
+      }
+      const updated = await vehicles.updateOne(
+        { _id: new ObjectId(params.id) },
+        { $set: { name: vehicle.name } },
+      );
+      reply.status(200);
+      return {
+        vehicle: updated,
+      }
+    },
+  );
 }

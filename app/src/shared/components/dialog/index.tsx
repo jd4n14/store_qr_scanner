@@ -22,6 +22,7 @@ export function AppDialog(props: AppDialogProps) {
     toggleOpen();
     fn?.();
   }
+
   return (
     <>
       {props.trigger({ toggle: triggerFn })}
@@ -29,6 +30,7 @@ export function AppDialog(props: AppDialogProps) {
         fullScreen={fullScreen}
         open={open}
         onClose={toggleOpen}
+        maxWidth="md"
         TransitionComponent={SlideUp}
       >
         {

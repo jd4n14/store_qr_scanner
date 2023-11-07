@@ -1,6 +1,6 @@
 // wrapper for fetch
 //
-const baseUrl = import.meta.env.VITE_API_URL || 'https://registros.cleantechpro.com.mx/api';
+const baseUrl = import.meta.env.VITE_API_URL || "https://registros.cleantechpro.com.mx/api";
 export const fetchApi = async (url: string, options: RequestInit = {}) => {
   const response = await fetch(`${baseUrl}${url}`, options);
   if (!response.ok) {
@@ -11,5 +11,9 @@ export const fetchApi = async (url: string, options: RequestInit = {}) => {
   if (response.status === 201) {
     return { ok: true };
   }
-  return response.json();
-}
+  try {
+    return response.json();
+  } catch (err) {
+    return { ok: true };
+  }
+};

@@ -1,13 +1,13 @@
 import { Button, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { AppDialog, ShowQR, Search } from "../../shared/components";
-import { AddVehicleForm, VehicleCard } from "./components";
+import { VehicleForm, VehicleCard } from "./components";
 import { StyledGrid, StyledHeader } from "./styles.tsx";
 import { useVehiclesPage } from "./hooks/useVehiclesPage";
 import { Helmet } from "react-helmet-async";
 
 const VehiclesPage = () => {
-  const { vehicleList, onSubmit, isLoading, onSearch } = useVehiclesPage();
+  const { vehicleList, onSubmit, isLoading, onSearch, updateVehicle } = useVehiclesPage();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -28,14 +28,22 @@ const VehiclesPage = () => {
           )}
           title="Agregar vehiculo"
         >
-          {({ toggle }) => <AddVehicleForm onSubmit={(values) => onSubmit(values, toggle)} />}
+          {({ toggle }) => <VehicleForm onSubmit={(values) => onSubmit(values, toggle)} />}
         </AppDialog>
       </StyledHeader>
       <Search onSearch={onSearch} />
       <StyledGrid>
         {vehicleList.map((vehicles) => (
           <ShowQR key={vehicles._id} title={vehicles.name} value={vehicles._id}>
-            {({ toggle }) => <VehicleCard onClick={() => toggle()} vehicle={vehicles} />}
+            {({ toggle }) => (
+              <VehicleCard
+                onClick={() => toggle()}
+                vehicle={vehicles}
+                onUpdate={async (values) => {
+                  await updateVehicle({ name: values.name, id: vehicles._id });
+                }}
+              />
+            )}
           </ShowQR>
         ))}
       </StyledGrid>

@@ -9,7 +9,7 @@ const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
 });
 
-interface AddVehicleFormProps {
+interface VehicleFormProps {
   onSubmit: (values: InferType<typeof validationSchema>) => Promise<void>;
   initialValues?: Partial<InferType<typeof validationSchema>>;
 }
@@ -18,10 +18,11 @@ const StyledForm = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(2),
+  minWidth: 300,
   padding: theme.spacing(2),
 }));
 
-export const AddVehicleForm = (props: AddVehicleFormProps) => {
+export const VehicleForm = (props: VehicleFormProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const formik = useFormik({
     initialValues: Object.assign(
@@ -38,13 +39,17 @@ export const AddVehicleForm = (props: AddVehicleFormProps) => {
     inputRef.current?.focus();
   }, [])
 
+
   return (
-    <StyledForm onSubmit={formik.handleSubmit}>
+    <StyledForm autoComplete="off" onSubmit={formik.handleSubmit}>
       <TextField
         inputRef={inputRef}
         fullWidth
+        autoComplete="off"
+        aria-autocomplete="none"
         id="name"
         name="name"
+        type="text"
         label="Nombre"
         value={formik.values.name}
         onChange={formik.handleChange}

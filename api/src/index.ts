@@ -1,9 +1,9 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyInstance } from 'fastify';
 import * as path from 'node:path';
 import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import { loadRoutes } from './routes';
-import 'dotenv/config'
+import 'dotenv/config';
 
 const app = Fastify({
   logger: true,
@@ -23,7 +23,10 @@ const start = async () => {
       return reply.sendFile('index.html');
     });
 
-    loadRoutes(app);
+    app.register(async (app: FastifyInstance, opts: any, done: () => void) => {
+      loadRoutes(app);
+      done();
+    }, { prefix: 'api' });
     // redirect all other routes to index.html
     app.setNotFoundHandler(async (req, reply) => {
       return reply.sendFile('index.html');

@@ -1,2 +1,2 @@
-export * from './AddVehicleForm';
+export * from './VehicleForm';
 export * from './VehicleCard';
